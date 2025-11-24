@@ -1,0 +1,99 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: basic-service-repo
+  title: Basic Service Repository
+  description: Create a starter service repo with Backstage catalog info and README.
+  tags:
+    - service
+    - starter
+    - kubrix
+spec:
+  owner: group:platform-engineering
+  type: service
+
+  parameters:
+    - title: Service details
+      required:
+        - name
+        - owner
+        - description
+      properties:
+        name:
+          title: Service name
+          type: string
+          description: Unique, URL-friendly name for the service.
+          default: my-service
+          pattern: '^[a-z0-9-]+$'
+        description:
+          title: Description
+          type: string
+          description: What does this service do?
+        owner:
+          title: Owner group
+          type: string
+          description: Backstage group that owns this service.
+          ui:field: MyGroupsPicker
+          ui:options: {}
+
+    - title: Repository settings
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Destination repository
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+            allowedOwners:
+              - te-industry-tech-office
+            requestUserCredentials:
+              secretsKey: USER_OAUTH_TOKEN
+              additionalScopes:
+                github:
+                  - repo
+                  - workflow
+
+  steps:
+    - id: fetch-base
+      name: Fetch skeleton
+      action: fetch:template
+      input:
+        url: ./skeleton
+        targetPath: .
+        values:
+          name: ${{ parameters.name }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          repoOwner: ${{ (parameters.repoUrl | parseRepoUrl)["owner"] }}
+          repoName: ${{ (parameters.repoUrl | parseRepoUrl)["repo"] }}
+
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        sourcePath: .
+        repoUrl: ${{ parameters.repoUrl }}
+        allowedHosts: ['github.com']
+        description: ${{ parameters.description }}
+        gitAuthorName: ${{ user.entity.metadata.name }}
+        gitAuthorEmail: ${{ user.entity.spec.profile.email }}
+        repoVisibility: private
+        deleteBranchOnMerge: true
+
+    - id: register
+      name: Register in catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}

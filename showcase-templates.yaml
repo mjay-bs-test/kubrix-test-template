@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: kubrix-test-templates
+  description: Backstage software templates for kubriX product units
+spec:
+  type: url
+  targets:
+    - ./templates/scaffolder-templates/**/template.yaml
