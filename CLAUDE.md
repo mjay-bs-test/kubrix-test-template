@@ -35,8 +35,16 @@ Each `template.yaml` follows the Backstage Template v1beta3 spec:
 - Always set `allowedHosts` and `allowedOwners` in `RepoUrlPicker` UI field (in parameters section) to restrict where repos can be created
 - **IMPORTANT**: Do NOT include `allowedHosts` in the `publish:github` action input - it only belongs in the `RepoUrlPicker` configuration
 - Use `requestUserCredentials.secretsKey: USER_OAUTH_TOKEN` for GitHub publishing with user credentials
-- Set `repoVisibility: private` by default for security
+- Set `repoVisibility: internal` for organization-wide visibility (use `private` for restricted access, `public` for open source)
 - Include `deleteBranchOnMerge: true` for clean repo hygiene
+- Explicitly reference the token in publish step: `token: ${{ secrets.USER_OAUTH_TOKEN }}`
+
+**Troubleshooting Permissions**:
+If templates fail with "not allowed to create repo" errors:
+1. Verify the GitHub OAuth app is approved for the organization at `https://github.com/organizations/<org>/settings/oauth_application_policy`
+2. Ensure USER_OAUTH_TOKEN has required scopes: `repo`, `workflow`, and optionally `write:org`
+3. Users must grant the OAuth app access to the organization in their GitHub settings
+4. Check Backstage logs: `kubectl logs -n backstage <pod> | grep -i auth`
 
 ### Template Parameters
 - Service names must match pattern `'^[a-z0-9-]+$'` (lowercase, URL-friendly, hyphens allowed)

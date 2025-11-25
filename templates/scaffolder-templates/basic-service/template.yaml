@@ -76,8 +76,9 @@ spec:
       input:
         description: ${{ parameters.description }}
         repoUrl: ${{ parameters.repoUrl }}
-        repoVisibility: private
+        repoVisibility: internal
         deleteBranchOnMerge: true
+        token: ${{ secrets.USER_OAUTH_TOKEN }}
 
     - id: register
       name: Register in catalog
