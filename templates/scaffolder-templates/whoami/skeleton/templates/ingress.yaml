@@ -24,11 +24,15 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    - host: {{ .Release.Name }}.{{ .Values.kubriXIngressDomain }}
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
       http:
         paths:
-          - path: /
-            pathType: Prefix
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ .pathType }}
+            {{- end }}
             backend:
               service:
                 name: {{ .Release.Name }}
