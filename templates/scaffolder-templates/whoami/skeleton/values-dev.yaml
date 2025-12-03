@@ -8,3 +8,6 @@ resources:
   limits:
     memory: "64Mi"
     cpu: "100m"
+
+ingress:
+  className: "nginx-tietoevry"
