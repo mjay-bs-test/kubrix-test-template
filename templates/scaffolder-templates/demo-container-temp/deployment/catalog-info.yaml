@@ -37,6 +37,7 @@ spec:
     - resource:kyverno
     - resource:tempo
     - resource:backstage
+  subcomponentOf: ${{values.team}}-${{values.application_id}}-deploy
 ---
 #test
 apiVersion: backstage.io/v1alpha1
@@ -77,7 +78,7 @@ spec:
     - resource:kyverno
     - resource:tempo
     - resource:backstage
-
+  subcomponentOf: ${{values.team}}-${{values.application_id}}-deploy
 ---
 # dev
 apiVersion: backstage.io/v1alpha1
@@ -118,7 +119,7 @@ spec:
     - resource:kyverno
     - resource:tempo
     - resource:backstage
-    
+  subcomponentOf: ${{values.team}}-${{values.application_id}}-deploy
 ---
 # main, at the end of catalog-info.yaml so that register link is on main component
 apiVersion: backstage.io/v1alpha1
@@ -141,7 +142,7 @@ metadata:
       icon: github
     - url: https://argocd.${{values.fqdn}}/applications/adn-${{values.team}}/${{values.team}}-${{values.application_id}}?resource=
       title: ArgoCD Application Information of ${{values.team}}-${{values.application_id}}
-      icon: web
+      icon: argocd
   annotations:
     github.com/project-slug: ${{values.repoOwner}}/${{values.team}}-${{values.application_id}}-deploy
     argocd/app-namespace: adn-${{values.team}}
