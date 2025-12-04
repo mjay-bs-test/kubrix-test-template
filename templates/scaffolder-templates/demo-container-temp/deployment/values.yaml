@@ -2,7 +2,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/${{values.repoOwner}}/kubrix-test-container-demo
+  repository: ghcr.io/${{values.repoOwner}}/${{values.team}}-${{values.application_id}}
   tag: latest
   pullPolicy: IfNotPresent
 
