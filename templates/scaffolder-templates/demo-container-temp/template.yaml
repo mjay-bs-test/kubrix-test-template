@@ -39,6 +39,7 @@ spec:
           title: Owner team
           type: string
           description: Team that owns this application.
+          default: group:csa
           ui:field: MyGroupsPicker
           ui:options: {}
         fqdn:
