@@ -1,13 +1,12 @@
-# main, at the end of catalog-info.yaml so that register link is on main component
+# Application source code component
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: "${{values.team}}-${{values.application_id}}"
-  description: "Development-${{values.team}}-${{values.application_id}}"
+  description: "Source code for ${{values.team}}-${{values.application_id}}"
   tags:
-    - template
     - development
-    - kargo
+    - container
     - demo
     - csa
   links:
@@ -18,14 +17,11 @@ metadata:
       title: Deployment Repository
       icon: github
   annotations:
-    github.com/project-slug: ${{values.repoOwner}}/${{values.repoUrlRepo}}
+    github.com/project-slug: ${{values.repoOwner}}/${{values.team}}-${{values.application_id}}
     backstage.io/techdocs-ref: dir:.
 spec:
-  type: template
+  type: service
   lifecycle: development
   owner: "${{values.team}}"
-  system: ${{values.application_id}}
   dependsOn:
-    - component:${{values.team}}-${{values.application_id}}-deploy
-
----
+    - component:default/${{values.team}}-${{values.application_id}}-deploy

@@ -1,9 +1,9 @@
-# Default values for whoami
+# Default values for ${{values.team}}-${{values.application_id}}
 replicaCount: 1
 
 image:
-  repository: traefik/whoami
-  tag: v1.10
+  repository: ghcr.io/${{values.repoOwner}}/${{values.team}}-${{values.application_id}}
+  tag: latest
   pullPolicy: IfNotPresent
 
 service:
