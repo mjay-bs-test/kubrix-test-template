@@ -2,12 +2,12 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: "${{values.team}}-${{values.application_id}}-deploy-prod"
+  name: "${{values.team}}-${{values.application_id}}-prod-deployment"
   description: "deployment-${{values.team}}-${{values.application_id}}-prod"
   tags:
     - template
-    - kargo
     - deployment
+    - kargo
     - demo
     - csa
   links:
@@ -15,7 +15,7 @@ metadata:
       title: Prod Instance of ${{values.team}}-${{values.application_id}}
       icon: web
   annotations:
-    github.com/project-slug: ${{values.repoUrlowner}}/${{values.repoUrlRepo}}
+    github.com/project-slug: ${{values.repoOwner}}/${{values.repoUrlRepo}}
     backstage.io/kubernetes-label-selector: 'app.kubernetes.io/instance=${{values.application_id}}-prod'
     argocd/app-namespace: adn-${{values.team}}
     argocd/app-name: ${{values.application_id}}-prod
@@ -43,12 +43,12 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: "${{values.team}}-${{values.application_id}}-deploy-test"
+  name: "${{values.team}}-${{values.application_id}}-test-deployment"
   description: "deployment-${{values.team}}-${{values.application_id}}-test"
   tags:
     - template
-    - kargo
     - deployment
+    - kargo
     - demo
     - csa
   links:
@@ -56,7 +56,7 @@ metadata:
       title: Test Instance of ${{values.team}}-${{values.application_id}}
       icon: web
   annotations:
-    github.com/project-slug: ${{values.repoUrlowner}}/${{values.repoUrlRepo}}
+    github.com/project-slug: ${{values.repoOwner}}/${{values.repoUrlRepo}}
     backstage.io/kubernetes-label-selector: 'app.kubernetes.io/instance=${{values.application_id}}-test'
     argocd/app-namespace: adn-${{values.team}}
     argocd/app-name: ${{values.application_id}}-test
@@ -84,12 +84,12 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: "${{values.team}}-${{values.application_id}}-deploy-dev"
+  name: "${{values.team}}-${{values.application_id}}-dev-deployment"
   description: "deployment-${{values.team}}-${{values.application_id}}-dev"
   tags:
     - template
-    - kargo
     - deployment
+    - kargo
     - demo
     - csa
   links:
@@ -97,7 +97,7 @@ metadata:
       title: Dev Instance of ${{values.team}}-${{values.application_id}}
       icon: web
   annotations:
-    github.com/project-slug: ${{values.repoUrlowner}}/${{values.repoUrlRepo}}
+    github.com/project-slug: ${{values.repoOwner}}/${{values.repoUrlRepo}}
     backstage.io/kubernetes-label-selector: 'app.kubernetes.io/instance=${{values.application_id}}-dev'
     argocd/app-namespace: adn-${{values.team}}
     argocd/app-name: ${{values.application_id}}-dev
@@ -129,22 +129,22 @@ metadata:
   description: "deployment-${{values.team}}-${{values.application_id}}"
   tags:
     - template
-    - kargo
     - deployment
+    - kargo
     - demo
     - csa
   links:
-    - url: https://github.com/${{values.repoUrlowner}}/${{values.team}}-${{values.application_id}}-app
+    - url: https://github.com/${{values.repoOwner}}/${{values.team}}-${{values.application_id}}
       title: Application Source Code
       icon: github
-    - url: https://github.com/${{values.repoUrlowner}}/${{values.team}}-${{values.application_id}}-deploy
+    - url: https://github.com/${{values.repoOwner}}/${{values.team}}-${{values.application_id}}-deploy
       title: Deployment Repository
       icon: github
     - url: https://argocd.${{values.fqdn}}/applications/adn-${{values.team}}/${{values.team}}-${{values.application_id}}?resource=
       title: ArgoCD Application Information of ${{values.team}}-${{values.application_id}}
       icon: web
   annotations:
-    github.com/project-slug: ${{values.repoUrlowner}}/${{values.repoUrlRepo}}
+    github.com/project-slug: ${{values.repoOwner}}/${{values.repoUrlRepo}}
     argocd/app-namespace: adn-${{values.team}}
     argocd/app-name: ${{values.team}}-${{values.application_id}}
     backstage.io/techdocs-ref: dir:.
@@ -164,4 +164,6 @@ spec:
     - resource:kyverno
     - resource:tempo
     - resource:backstage
+  dependencyOf:
+    - component:${{values.team}}-${{values.application_id}}
 ---

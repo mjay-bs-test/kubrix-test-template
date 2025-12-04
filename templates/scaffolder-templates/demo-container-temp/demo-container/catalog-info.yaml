@@ -1,0 +1,31 @@
+# main, at the end of catalog-info.yaml so that register link is on main component
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: "${{values.team}}-${{values.application_id}}"
+  description: "Development-${{values.team}}-${{values.application_id}}"
+  tags:
+    - template
+    - development
+    - kargo
+    - demo
+    - csa
+  links:
+    - url: https://github.com/${{values.repoOwner}}/${{values.team}}-${{values.application_id}}
+      title: Application Source Code
+      icon: github
+    - url: https://github.com/${{values.repoOwner}}/${{values.team}}-${{values.application_id}}-deploy
+      title: Deployment Repository
+      icon: github
+  annotations:
+    github.com/project-slug: ${{values.repoOwner}}/${{values.repoUrlRepo}}
+    backstage.io/techdocs-ref: dir:.
+spec:
+  type: template
+  lifecycle: development
+  owner: "${{values.team}}"
+  system: ${{values.application_id}}
+  dependsOn:
+    - component:${{values.team}}-${{values.application_id}}-deploy
+
+---
