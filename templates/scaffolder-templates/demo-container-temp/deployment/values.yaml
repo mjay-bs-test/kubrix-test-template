@@ -15,7 +15,10 @@ ingress:
   enabled: true
   className: ""
   annotations: {}
-  tls: []
+  host: ""
+  tls:
+    enabled: false
+    secretName: ""
   
 resources:
   requests:
